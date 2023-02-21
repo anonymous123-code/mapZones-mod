@@ -11,7 +11,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -77,7 +76,7 @@ public class ZoneCorner extends Item implements MapZonesItem {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStackData stack = asItemStackData(user.getStackInHand(hand));
 		if (user.isSneaking()) {
-			HitResult hitResult = raycast(user, 0);
+			HitResult hitResult = MapZonesItem.raycast(user, 0);
 			if (hitResult instanceof EntityHitResult entityHitResult
 					&& entityHitResult.getEntity() instanceof MapZone) {
 
@@ -163,28 +162,6 @@ public class ZoneCorner extends Item implements MapZonesItem {
 
 	private static void refreshHudName() {
 		if (MinecraftQuiltLoader.getEnvironmentType() == EnvType.CLIENT) ((InGameHudMixin) MinecraftClient.getInstance().inGameHud).setHeldItemTooltipFade(60);
-	}
-
-	// 100% not stolen from gadget
-	// https://github.com/wisp-forest/gadget/blob/e26d8a7bccbd536b689c37cff004673f2f71481a/src/main/java/io/wispforest/gadget/client/GadgetClient.java#L229-L247
-	// 100% not stolen from owo-whats-this
-	// https://github.com/wisp-forest/owo-whats-this/blob/master/src/main/java/io/wispforest/owowhatsthis/OwoWhatsThis.java#L155-L171.
-	public static HitResult raycast(Entity entity, float tickDelta) {
-		var blockTarget = entity.raycast(5, tickDelta, false);
-
-		var maxReach = entity.getRotationVec(tickDelta).multiply(5);
-		var entityTarget = ProjectileUtil.raycast(
-				entity,
-				entity.getEyePos(),
-				entity.getEyePos().add(maxReach),
-				entity.getBoundingBox().stretch(maxReach),
-				candidate -> true,
-				5 * 5
-		);
-
-		return entityTarget != null && entityTarget.squaredDistanceTo(entity) < blockTarget.squaredDistanceTo(entity)
-				? entityTarget
-				: blockTarget;
 	}
 
 	private static ItemStackData asItemStackData(ItemStack stack) {

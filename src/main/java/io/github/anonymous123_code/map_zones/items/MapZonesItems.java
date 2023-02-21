@@ -10,9 +10,12 @@ import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 
 public class MapZonesItems {
 	public static final ZoneCorner ZONE_CORNER = new ZoneCorner(new QuiltItemSettings());
+	public static final ZoneWrench ZONE_WRENCH = new ZoneWrench(new QuiltItemSettings());
 
 	public static void register() {
 		Registry.register(Registries.ITEM, MapZones.id("zone_corner"), ZONE_CORNER);
+		Registry.register(Registries.ITEM, MapZones.id("zone_wrench"), ZONE_WRENCH);
+
 		AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
 			if (!player.isSpectator() && player.getMainHandStack().getItem() instanceof ZoneCorner) {
 				return ((ZoneCorner) player.getMainHandStack().getItem()).onLeft(player, world, hand, pos, direction);
