@@ -11,6 +11,7 @@ public class ItemStackMixin implements ItemStackData {
 	public MapZone mapZones$bound;
 	public BlockPos mapZones$firstCorner;
 	public BlockPos mapZones$secondCorner;
+	public boolean attachmentModeActive;
 
 	@Override
 	public MapZone mapZones$getBound() {
@@ -20,6 +21,16 @@ public class ItemStackMixin implements ItemStackData {
 	@Override
 	public void mapZones$setBound(MapZone mapZones$bound) {
 		this.mapZones$bound = mapZones$bound;
+	}
+
+	@Override
+	public boolean mapZones$getAttachmentModeActive() {
+		return this.attachmentModeActive;
+	}
+
+	@Override
+	public void mapZones$setAttachmentModeActive(boolean mapZones$attachmentModeActive) {
+		this.attachmentModeActive = mapZones$attachmentModeActive;
 	}
 
 	@Override
