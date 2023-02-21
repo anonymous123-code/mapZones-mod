@@ -10,6 +10,5 @@ public class ClientMapZones implements ClientModInitializer {
 	@Override
 	public void onInitializeClient(ModContainer mod) {
 		EntityRendererRegistry.register(MapZonesEntities.MAP_ZONE, EmptyEntityRenderer::new);
-
 	}
 }

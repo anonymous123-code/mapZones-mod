@@ -1,9 +1,9 @@
 package io.github.anonymous123_code.map_zones.items;
 
 
-import io.github.anonymous123_code.map_zones.MapZones;
 import io.github.anonymous123_code.map_zones.entities.MapZone;
 import io.github.anonymous123_code.map_zones.entities.MapZonesEntities;
+import io.github.anonymous123_code.map_zones.api.ItemStackData;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -26,42 +26,40 @@ import net.minecraft.world.World;
 import java.util.Objects;
 
 public class ZoneCorner extends MapZonesItem {
-	private BlockPos firstPos = null;
-	private BlockPos secondPos = null;
-
-	private MapZone bound = null;
-
 	public ZoneCorner(Settings settings) {
 		super(settings);
 	}
 
 	public ActionResult onLeft(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction direction) {
-		if (this.bound == null) {
-			this.firstPos = pos;
-			this.createEntityAndClearIfNeeded(world);
+		ItemStackData stack = asItemStackData(player.getStackInHand(hand));
+		if (stack.mapZones$getBound() == null) {
+			stack.mapZones$setFirstCorner(pos);
+			this.createEntityAndClearIfNeeded(stack, world);
 		} else {
-			this.bound.setFirst(pos);
+			stack.mapZones$getBound().setFirst(pos);
 		}
 		return ActionResult.SUCCESS;
 	}
 
 	public ActionResult onRight(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
-		if (this.bound == null) {
-			this.secondPos = hitResult.getBlockPos();
-			this.createEntityAndClearIfNeeded(world);
+		ItemStackData stack = asItemStackData(player.getStackInHand(hand));
+		if (stack.mapZones$getBound() == null) {
+			stack.mapZones$setSecondCorner(hitResult.getBlockPos());
+			this.createEntityAndClearIfNeeded(stack, world);
 		} else {
-			this.bound.setSecond(hitResult.getBlockPos());
+			stack.mapZones$getBound().setSecond(hitResult.getBlockPos());
 		}
 		return ActionResult.SUCCESS;
 	}
 
 	public TypedActionResult<ItemStack> useSneakedOnEntity(ItemStack stack, PlayerEntity user, MapZone entity, Hand hand) {
-		this.bound = entity;
+		asItemStackData(stack).mapZones$setBound(entity);
 		return TypedActionResult.success(stack);
 	}
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+		ItemStackData stack = asItemStackData(user.getStackInHand(hand));
 		if (user.isSneaking()) {
 			HitResult hitResult = raycast(user, 0);
 			if (hitResult instanceof EntityHitResult entityHitResult
@@ -75,22 +73,22 @@ public class ZoneCorner extends MapZonesItem {
 			}
 
 
-			this.bound = null;
-			this.firstPos = null;
-			this.secondPos = null;
+			stack.mapZones$setBound(null);
+			stack.mapZones$setFirstCorner(null);
+			stack.mapZones$setSecondCorner(null);
 			return TypedActionResult.success(user.getStackInHand(hand));
 		}
 		return super.use(world, user, hand);
 	}
 
-	public void createEntityAndClearIfNeeded(World world) {
-		if (this.firstPos == null || this.secondPos == null) return;
+	public void createEntityAndClearIfNeeded(ItemStackData itemStack, World world) {
+		if (itemStack.mapZones$getFirstCorner() == null || itemStack.mapZones$getSecondCorner() == null) return;
 
 		if (world instanceof ServerWorld serverWorld) {
 			NbtCompound nbtCompound = new NbtCompound();
 
-			nbtCompound.putIntArray("FirstPos", new int[]{this.firstPos.getX(), this.firstPos.getY(), this.firstPos.getZ()});
-			nbtCompound.putIntArray("SecondPos", new int[]{this.secondPos.getX(), this.secondPos.getY(), this.secondPos.getZ()});
+			nbtCompound.putIntArray("FirstPos", new int[]{itemStack.mapZones$getFirstCorner().getX(), itemStack.mapZones$getFirstCorner().getY(), itemStack.mapZones$getFirstCorner().getZ()});
+			nbtCompound.putIntArray("SecondPos", new int[]{itemStack.mapZones$getSecondCorner().getX(), itemStack.mapZones$getSecondCorner().getY(), itemStack.mapZones$getSecondCorner().getZ()});
 
 			nbtCompound.putString("id", MapZonesEntities.MAP_ZONE_ID.toString());
 
@@ -98,13 +96,12 @@ public class ZoneCorner extends MapZonesItem {
 
 			serverWorld.shouldCreateNewEntityWithPassenger(entity);
 
-			MapZones.LOGGER.error("Should have created entity: {}", entity);
-			this.firstPos = null;
-			this.secondPos = null;
+			itemStack.mapZones$setFirstCorner(null);
+			itemStack.mapZones$setSecondCorner(null);
 		}
 		if (world instanceof ClientWorld && !MinecraftClient.getInstance().isInSingleplayer()) {
-			this.firstPos = null;
-			this.secondPos = null;
+			itemStack.mapZones$setFirstCorner(null);
+			itemStack.mapZones$setSecondCorner(null);
 		}
 	}
 
@@ -128,5 +125,9 @@ public class ZoneCorner extends MapZonesItem {
 		return entityTarget != null && entityTarget.squaredDistanceTo(entity) < blockTarget.squaredDistanceTo(entity)
 				? entityTarget
 				: blockTarget;
+	}
+
+	private static ItemStackData asItemStackData(ItemStack stack) {
+		return ((ItemStackData)(Object)stack);
 	}
 }
