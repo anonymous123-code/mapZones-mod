@@ -1,0 +1,41 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "io.github.anonymous123_code",
+		"id": "map_zones",
+		"version": "${version}",
+		"metadata": {
+			"name": "Map Zones",
+			"description": "A mod which allows to add configurable Zones into maps",
+			"contributors": {
+				"anonymous123-code": "Owner"
+			},
+			"contact": {
+				"homepage": "https://example.com/",
+				"issues": "https://github.com/QuiltMC/quilt-template-mod/issues",
+				"sources": "https://github.com/QuiltMC/quilt-template-mod"
+			},
+			"icon": "assets/map_zones/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"entrypoints": {
+			"init": "io.github.anonymous123_code.map_zones.MapZones",
+			"client_init": "io.github.anonymous123_code.map_zones.client.ClientMapZones"
+		},
+		"depends": [
+			{
+				"id": "quilt_loader",
+				"versions": ">=0.18.0-"
+			},
+			{
+				"id": "quilted_fabric_api",
+				"versions": ">=5.0.0-"
+			},
+			{
+				"id": "minecraft",
+				"versions": ">=1.19.3"
+			}
+		]
+	},
+	"mixin": "map_zones.mixins.json"
+}
