@@ -26,7 +26,5 @@ public class MapZones implements ModInitializer {
 
 		MapZonesItems.register();
 		MapZonesEntities.register();
-
-		LOGGER.info("Hello Quilt world from {}!", mod.metadata().name());
 	}
 }
