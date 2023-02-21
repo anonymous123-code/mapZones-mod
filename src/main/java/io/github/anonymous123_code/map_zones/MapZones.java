@@ -23,7 +23,7 @@ public class MapZones implements ModInitializer {
 	@Override
 	public void onInitialize(ModContainer mod) {
 		modId = mod.metadata().id();
-
+		
 		MapZonesItems.register();
 		MapZonesEntities.register();
 	}

@@ -6,11 +6,13 @@ import io.github.anonymous123_code.map_zones.entities.MapZone;
 import io.github.anonymous123_code.map_zones.entities.MapZonesEntities;
 import io.github.anonymous123_code.map_zones.mixin.InGameHudMixin;
 import net.fabricmc.api.EnvType;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
@@ -31,7 +33,7 @@ import org.quiltmc.loader.api.minecraft.MinecraftQuiltLoader;
 
 import java.util.Objects;
 
-public class ZoneCorner extends MapZonesItem {
+public class ZoneCorner extends Item implements MapZonesItem {
 	public ZoneCorner(Settings settings) {
 		super(settings);
 	}
@@ -64,6 +66,11 @@ public class ZoneCorner extends MapZonesItem {
 		asItemStackData(stack).mapZones$setBound(entity);
 		refreshHudName();
 		return TypedActionResult.success(stack);
+	}
+
+	@Override
+	public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
+		return false;
 	}
 
 	@Override
@@ -134,6 +141,7 @@ public class ZoneCorner extends MapZonesItem {
 		}
 	}
 
+	@Override
 	public Text getName(ItemStack stack) {
 		ItemStackData stackData = asItemStackData(stack);
 		Text leftCornerText = ((MutableText) Text.of("[L] ")).setStyle(Style.EMPTY.withColor(stackData.mapZones$getFirstCorner() == null ? Formatting.GRAY : Formatting.GREEN));
