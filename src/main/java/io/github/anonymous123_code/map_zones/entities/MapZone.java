@@ -1,6 +1,7 @@
 package io.github.anonymous123_code.map_zones.entities;
 
-import io.github.anonymous123_code.map_zones.MapZones;
+import com.mojang.brigadier.ParseResults;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.anonymous123_code.map_zones.api.OverlapCallbacks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
@@ -10,19 +11,28 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.CommandOutput;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.ScreenTexts;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapZone extends Entity implements OverlapCallbacks {
+	public static final String TAG_PREFIX = "mods/map_zones/collidesWith/";
 	private static final TrackedData<BlockPos> first = DataTracker.registerData(MapZone.class, TrackedDataHandlerRegistry.BLOCK_POS);
 	private static final TrackedData<BlockPos> second = DataTracker.registerData(MapZone.class, TrackedDataHandlerRegistry.BLOCK_POS);
-	public static final String TAG_PREFIX = "mods/map_zones/collidesWith/";
+
+	private final List<ParseResults<ServerCommandSource>> onEnterCommands = new ArrayList<>();
+	private final List<ParseResults<ServerCommandSource>> onTickCommands = new ArrayList<>();
+	private final List<ParseResults<ServerCommandSource>> onExitCommands = new ArrayList<>();
 	private EntityDimensions dimensions = super.getDimensions(null);
 	public MapZone(EntityType<?> variant, World world) {
 		super(variant, world);
@@ -43,7 +53,7 @@ public class MapZone extends Entity implements OverlapCallbacks {
 	}
 
 	private void onEntityIntersection(Entity other) {
-		if (this.getWorld() instanceof ServerWorld) {
+		if (!this.getWorld().isClient()) {
 			String scoreboardTag = TAG_PREFIX + this.uuidString;
 			if (!other.getScoreboardTags().contains(scoreboardTag)) {
 				this.onEntityIntersectionBegin(other);
@@ -55,17 +65,27 @@ public class MapZone extends Entity implements OverlapCallbacks {
 
 	@Override
 	public void onEntityIntersectionBegin(Entity other) {
-		MapZones.LOGGER.info("Hello, I'm {}", other);
+		this.executeCommandList(this.onEnterCommands, other.getCommandSource());
 	}
 
 	@Override
 	public void onEntityIntersectionTick(Entity other) {
-		MapZones.LOGGER.info("I'm {}", other);
+		this.executeCommandList(this.onTickCommands, other.getCommandSource());
 	}
 
 	@Override
 	public void onEntityIntersectionEnd(Entity other) {
-		MapZones.LOGGER.info("Bye, I'm {}", other);
+		this.executeCommandList(this.onExitCommands, other.getCommandSource());
+	}
+
+	private void executeCommandList(List<ParseResults<ServerCommandSource>> commands, ServerCommandSource source) {
+		for (ParseResults<ServerCommandSource> command : commands) {
+			try {
+				this.getServer().getCommandManager().getDispatcher().execute(CommandManager.m_maovrlpm(command, src -> source));
+			} catch (CommandSyntaxException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 	@Override
@@ -94,8 +114,47 @@ public class MapZone extends Entity implements OverlapCallbacks {
 		this.setFirst(extractBlockPosFromIntList(nbt.getIntArray("FirstPos")));
 		this.setSecond(extractBlockPosFromIntList(nbt.getIntArray("SecondPos")));
 		this.updateDimensionsChange();
+
+		ServerCommandSource dummySource = new ServerCommandSource(
+				CommandOutput.DUMMY, Vec3d.ZERO, Vec2f.ZERO, null, 2, "", ScreenTexts.EMPTY, null, null
+		);
+
+		this.onEnterCommands.clear();
+		NbtList onEnterCommands = nbt.getList("OnEnter", NbtElement.STRING_TYPE);
+		for (NbtElement command : onEnterCommands) {
+			this.onEnterCommands.add(this.getServer().getCommandManager().getDispatcher().parse(command.asString(), dummySource));
+		}
+
+		this.onTickCommands.clear();
+		NbtList onTickCommands = nbt.getList("OnTick", NbtElement.STRING_TYPE);
+		for (NbtElement command : onTickCommands) {
+			this.onTickCommands.add(this.getServer().getCommandManager().getDispatcher().parse(command.asString(), dummySource));
+		}
+
+		this.onExitCommands.clear();
+		NbtList onExitCommands = nbt.getList("OnExit", NbtElement.STRING_TYPE);
+		for (NbtElement command : onExitCommands) {
+			this.onExitCommands.add(this.getServer().getCommandManager().getDispatcher().parse(command.asString(), dummySource));
+		}
 	}
 
+	@Override
+	protected void writeCustomDataToNbt(NbtCompound nbt) {
+		nbt.putIntArray("FirstPos", new int[]{this.getFirst().getX(), this.getFirst().getY(), this.getFirst().getZ()});
+		nbt.putIntArray("SecondPos", new int[]{this.getSecond().getX(), this.getSecond().getY(), this.getSecond().getZ()});
+
+		NbtList enterCommands = new NbtList();
+		enterCommands.addAll(this.onEnterCommands.stream().map(command -> NbtString.of(command.getReader().getString())).toList());
+		nbt.put("OnEnter", enterCommands);
+
+		NbtList tickCommands = new NbtList();
+		tickCommands.addAll(this.onTickCommands.stream().map(command -> NbtString.of(command.getReader().getString())).toList());
+		nbt.put("OnTick", tickCommands);
+
+		NbtList exitCommands = new NbtList();
+		exitCommands.addAll(this.onExitCommands.stream().map(command -> NbtString.of(command.getReader().getString())).toList());
+		nbt.put("OnExit", exitCommands);
+	}
 
 	private BlockPos getFirst() {
 		return this.dataTracker.get(first);
@@ -135,11 +194,5 @@ public class MapZone extends Entity implements OverlapCallbacks {
 		);
 		this.calculateDimensions();
 		this.setPosition(box.getCenter().withAxis(Direction.Axis.Y, box.getMin(Direction.Axis.Y)));
-	}
-
-	@Override
-	protected void writeCustomDataToNbt(NbtCompound nbt) {
-		nbt.putIntArray("FirstPos", new int[]{this.getFirst().getX(), this.getFirst().getY(), this.getFirst().getZ()});
-		nbt.putIntArray("SecondPos", new int[]{this.getSecond().getX(), this.getSecond().getY(), this.getSecond().getZ()});
 	}
 }

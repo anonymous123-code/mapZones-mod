@@ -115,7 +115,7 @@ public class ZoneCorner extends Item implements MapZonesItem {
 
 			serverWorld.shouldCreateNewEntityWithPassenger(entity);
 		}
-		if (MinecraftQuiltLoader.getEnvironmentType() == EnvType.CLIENT) {
+		if (world.isClient()) {
 			player.sendMessage(Text.literal("Created Zone"), true);
 		}
 		itemStack.mapZones$setFirstCorner(null);
