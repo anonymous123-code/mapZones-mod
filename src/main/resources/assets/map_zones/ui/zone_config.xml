@@ -5,23 +5,151 @@
             <children>
                 <flow-layout direction="vertical">
                     <children>
-                        <button>
-                            <text>Hello!</text>
-                        </button>
+                        <label>
+                            <text>Configure Zone</text>
+                            <color>dark-gray</color>
+                        </label>
+
+                        <scroll direction="vertical">
+                            <flow-layout direction="vertical">
+                                <children>
+                                    <template name="eventInputList">
+                                        <event_name>On Enter:</event_name>
+                                    </template>
+
+                                    <template name="eventInputList">
+                                        <event_name>On Tick:</event_name>
+                                    </template>
+
+                                    <template name="eventInputList">
+                                        <event_name>On Exit:</event_name>
+                                    </template>
+
+                                    <button>
+                                        <text>Delete this Zone and Exit</text>
+                                    </button>
+                                </children>
+                                <padding>
+                                    <vertical>5</vertical>
+                                </padding>
+                            </flow-layout>
+                            <padding>
+                                <top>10</top>
+                            </padding>
+                            <sizing>
+                                <vertical method="fill">60</vertical>
+                            </sizing>
+                        </scroll>
+                        <flow-layout direction="vertical">
+                            <children>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <button>
+                                            <text>Cancel</text>
+                                            <sizing>
+                                                <horizontal method="fill">20</horizontal>
+                                            </sizing>
+                                            <margins>
+                                                <horizontal>10</horizontal>
+                                            </margins>
+                                        </button>
+                                        <button>
+                                            <text>Done</text>
+                                            <sizing>
+                                                <horizontal method="fill">20</horizontal>
+                                            </sizing>
+                                        </button>
+                                    </children>
+                                    <vertical-alignment>center</vertical-alignment>
+                                </flow-layout>
+                            </children>
+                            <horizontal-alignment>right</horizontal-alignment>
+                            <padding>
+                                <top>10</top>
+                            </padding>
+                            <sizing>
+                                <horizontal method="fill">100</horizontal>
+                            </sizing>
+                        </flow-layout>
                     </children>
-                    <horizontal-alignment>center</horizontal-alignment>
                     <vertical-alignment>center</vertical-alignment>
-                    <padding><all>10</all></padding>
-                    <surface>
-                        <panel/>
-                    </surface>
+                    <horizontal-alignment>center</horizontal-alignment>
+                    <surface><panel/></surface>
+                    <padding>
+                        <all>10</all>
+                    </padding>
+                    <sizing>
+                        <horizontal method="fill">50</horizontal>
+                    </sizing>
                 </flow-layout>
             </children>
-            <horizontal-alignment>center</horizontal-alignment>
             <vertical-alignment>center</vertical-alignment>
-            <surface>
-                <vanilla-translucent/>
-            </surface>
+            <horizontal-alignment>center</horizontal-alignment>
+            <surface><vanilla-translucent/></surface>
         </flow-layout>
+
     </components>
+    <templates>
+
+        <commandInput>
+            <flow-layout direction="horizontal">
+                <children>
+                    <text-box>
+                        <sizing>
+                            <horizontal method="fill">90</horizontal>
+                        </sizing>
+                        <max-length>300</max-length>
+                        <text>{{command}}</text>
+                    </text-box>
+                    <button>
+                        <sizing>
+                            <horizontal method="fill">10</horizontal>
+                        </sizing>
+                        <text>Delete</text>
+                    </button>
+                </children>
+                <vertical-alignment>top</vertical-alignment>
+            </flow-layout>
+        </commandInput>
+
+        <eventInputList>
+            <flow-layout direction="vertical">
+                <children>
+                    <flow-layout direction="horizontal">
+                        <children>
+                            <label>
+                                <text>{{event_name}}</text>
+                                <color>dark-gray</color>
+                                <margins>
+                                    <vertical>2</vertical>
+                                </margins>
+                            </label>
+                        </children>
+                        <sizing>
+                            <horizontal method="fill">100</horizontal>
+                        </sizing>
+                        <vertical-alignment>center</vertical-alignment>
+                    </flow-layout>
+
+                    <flow-layout direction="vertical">
+                        <children>
+                            <template name="commandInput">
+                                <command>hi</command>
+                            </template>
+                            <button>
+                                <text>Add</text>
+                                <margins>
+                                    <vertical>2</vertical>
+                                </margins>
+                            </button>
+                        </children>
+                    </flow-layout>
+                </children>
+                <padding>
+                    <top>10</top>
+                </padding>
+                <vertical-alignment>top</vertical-alignment>
+            </flow-layout>
+        </eventInputList>
+    </templates>
 </owo-ui>
