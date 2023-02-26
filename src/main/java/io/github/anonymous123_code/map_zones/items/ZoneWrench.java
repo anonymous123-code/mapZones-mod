@@ -13,6 +13,9 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ZoneWrench extends Item implements MapZonesItem {
 	public ZoneWrench(Settings settings) {
@@ -25,7 +28,7 @@ public class ZoneWrench extends Item implements MapZonesItem {
 		if (hitResult instanceof EntityHitResult entityHitResult
 				&& entityHitResult.getEntity() instanceof MapZone) {
 			if (user instanceof ClientPlayerEntity) {
-				MinecraftClient.getInstance().setScreen(new ZoneConfigScreen());
+				MinecraftClient.getInstance().setScreen(new ZoneConfigScreen(new ArrayList<>(), List.of("Hi", "hello"), List.of("bye")));
 			}
 		}
 		return TypedActionResult.success(user.getStackInHand(hand));

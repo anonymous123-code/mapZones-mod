@@ -13,19 +13,12 @@
                         <scroll direction="vertical">
                             <flow-layout direction="vertical">
                                 <children>
-                                    <template name="eventInputList">
-                                        <event_name>On Enter:</event_name>
-                                    </template>
+                                    <flow-layout direction="vertical" id="eventList">
+                                        <children>
+                                        </children>
+                                    </flow-layout>
 
-                                    <template name="eventInputList">
-                                        <event_name>On Tick:</event_name>
-                                    </template>
-
-                                    <template name="eventInputList">
-                                        <event_name>On Exit:</event_name>
-                                    </template>
-
-                                    <button>
+                                    <button id="deleteAndExitButton">
                                         <text>Delete this Zone and Exit</text>
                                     </button>
                                 </children>
@@ -44,7 +37,7 @@
                             <children>
                                 <flow-layout direction="horizontal">
                                     <children>
-                                        <button>
+                                        <button id="cancelButton">
                                             <text>Cancel</text>
                                             <sizing>
                                                 <horizontal method="fill">20</horizontal>
@@ -53,7 +46,7 @@
                                                 <horizontal>10</horizontal>
                                             </margins>
                                         </button>
-                                        <button>
+                                        <button id="doneButton">
                                             <text>Done</text>
                                             <sizing>
                                                 <horizontal method="fill">20</horizontal>
@@ -94,18 +87,18 @@
         <commandInput>
             <flow-layout direction="horizontal">
                 <children>
-                    <text-box>
+                    <text-box id="commandTextBox">
                         <sizing>
                             <horizontal method="fill">90</horizontal>
                         </sizing>
                         <max-length>300</max-length>
                         <text>{{command}}</text>
                     </text-box>
-                    <button>
+                    <button id="deleteCommandButton">
+                        <text>Delete</text>
                         <sizing>
                             <horizontal method="fill">10</horizontal>
                         </sizing>
-                        <text>Delete</text>
                     </button>
                 </children>
                 <vertical-alignment>top</vertical-alignment>
@@ -133,10 +126,7 @@
 
                     <flow-layout direction="vertical">
                         <children>
-                            <template name="commandInput">
-                                <command>hi</command>
-                            </template>
-                            <button>
+                            <button id="appendCommandButton">
                                 <text>Add</text>
                                 <margins>
                                     <vertical>2</vertical>
