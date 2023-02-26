@@ -5,6 +5,7 @@ quilt_mappings = "1.19.3+build.23"
 quilt_loader = "0.18.1-beta.73"
 
 gadget = "0.1.7+1.19.3"
+owo = "0.10.2+1.19.3"
 
 quilted_fabric_api = "5.0.0-beta.6+0.74.0-1.19.3"
 
@@ -14,6 +15,8 @@ quilt_mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt_m
 quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
 
 gadget = {module = "io.wispforest:gadget", version.ref = "gadget"}
+owo_lib = {module = "io.wispforest:owo-lib", version.ref = "owo"}
+owo_sentinel = {module = "io.wispforest:owo-sentinel", version.ref = "owo"}
 
 quilted_fabric_api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "quilted_fabric_api" }
 quilted_fabric_api_deprecated = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api-deprecated", version.ref = "quilted_fabric_api" }
