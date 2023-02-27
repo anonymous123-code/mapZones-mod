@@ -138,6 +138,27 @@ public class MapZone extends Entity implements OverlapCallbacks {
 		}
 	}
 
+	public void setListeners (List<String> onEnterCommands, List<String> onTickCommands, List<String> onExitCommands) {
+		ServerCommandSource dummySource = new ServerCommandSource(
+				CommandOutput.DUMMY, Vec3d.ZERO, Vec2f.ZERO, null, 2, "", ScreenTexts.EMPTY, null, null
+		);
+
+		this.onEnterCommands.clear();
+		for (String command : onEnterCommands) {
+			this.onEnterCommands.add(this.getServer().getCommandManager().getDispatcher().parse(command, dummySource));
+		}
+
+		this.onTickCommands.clear();
+		for (String command : onTickCommands) {
+			this.onTickCommands.add(this.getServer().getCommandManager().getDispatcher().parse(command, dummySource));
+		}
+
+		this.onExitCommands.clear();
+		for (String command : onExitCommands) {
+			this.onExitCommands.add(this.getServer().getCommandManager().getDispatcher().parse(command, dummySource));
+		}
+	}
+
 	@Override
 	protected void writeCustomDataToNbt(NbtCompound nbt) {
 		nbt.putIntArray("FirstPos", new int[]{this.getFirst().getX(), this.getFirst().getY(), this.getFirst().getZ()});

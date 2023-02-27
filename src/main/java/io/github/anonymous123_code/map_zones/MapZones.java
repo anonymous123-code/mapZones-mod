@@ -2,6 +2,7 @@ package io.github.anonymous123_code.map_zones;
 
 import io.github.anonymous123_code.map_zones.entities.MapZonesEntities;
 import io.github.anonymous123_code.map_zones.items.MapZonesItems;
+import io.github.anonymous123_code.map_zones.networking.MapZonesPackets;
 import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
@@ -23,8 +24,9 @@ public class MapZones implements ModInitializer {
 	@Override
 	public void onInitialize(ModContainer mod) {
 		modId = mod.metadata().id();
-		
+
 		MapZonesItems.register();
 		MapZonesEntities.register();
+		MapZonesPackets.registerServerReceivers();
 	}
 }

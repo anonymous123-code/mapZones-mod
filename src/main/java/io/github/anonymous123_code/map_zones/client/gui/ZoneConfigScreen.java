@@ -1,13 +1,17 @@
 package io.github.anonymous123_code.map_zones.client.gui;
 
+import io.github.anonymous123_code.map_zones.networking.MapZonesPackets;
+import io.github.anonymous123_code.map_zones.networking.ZoneCommandSyncPacket;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.TextBoxComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
+import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class ZoneConfigScreen extends BaseUIModelScreen<FlowLayout> {
@@ -18,9 +22,11 @@ public class ZoneConfigScreen extends BaseUIModelScreen<FlowLayout> {
 	private final List<String> initialOnEnterCommands;
 	private final List<String> initialOnTickCommands;
 	private final List<String> initialOnExitCommands;
+	private final UUID zoneUUID;
 
-	public ZoneConfigScreen(List<String> initialOnEnterCommands, List<String> initialOnTickCommands, List<String> initialOnExitCommands) {
+	public ZoneConfigScreen(UUID zoneUUID, List<String> initialOnEnterCommands, List<String> initialOnTickCommands, List<String> initialOnExitCommands) {
 		super(FlowLayout.class, DataSource.file("../src/main/resources/assets/map_zones/ui/zone_config.xml"));
+		this.zoneUUID = zoneUUID;
 		this.initialOnEnterCommands = initialOnEnterCommands;
 		this.initialOnTickCommands = initialOnTickCommands;
 		this.initialOnExitCommands = initialOnExitCommands;
@@ -35,7 +41,13 @@ public class ZoneConfigScreen extends BaseUIModelScreen<FlowLayout> {
 		rootComponent.childById(ButtonComponent.class, "cancelButton").onPress(element -> this.closeScreen());
 
 		rootComponent.childById(ButtonComponent.class, "doneButton").onPress(element -> {
-			// TODO: send packet to save data
+			ClientPlayNetworking.send(MapZonesPackets.SAVE_CONFIG_SCREEN,
+					(new ZoneCommandSyncPacket(
+							this.zoneUUID,
+							this.onEnterCommands.stream().map(DeletableStringRef::get).toList(),
+							this.onTickCommands.stream().map(DeletableStringRef::get).toList(),
+							this.onExitCommands.stream().map(DeletableStringRef::get).toList()
+					)).getByteBuffer());
 			this.closeScreen();
 		});
 
