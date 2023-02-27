@@ -174,6 +174,18 @@ public class MapZone extends Entity implements OverlapCallbacks {
 		this.updateDimensionsChange();
 	}
 
+	public List<ParseResults<ServerCommandSource>> getOnEnterCommands() {
+		return this.onEnterCommands;
+	}
+
+	public List<ParseResults<ServerCommandSource>> getOnTickCommands() {
+		return this.onTickCommands;
+	}
+
+	public List<ParseResults<ServerCommandSource>> getOnExitCommands() {
+		return this.onExitCommands;
+	}
+
 	private static BlockPos extractBlockPosFromIntList(int[] list) {
 		return switch (list.length) {
 			case 0 -> BlockPos.ORIGIN;
