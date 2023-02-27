@@ -2,6 +2,7 @@ package io.github.anonymous123_code.map_zones.entities;
 
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import io.github.anonymous123_code.map_zones.MapZones;
 import io.github.anonymous123_code.map_zones.api.OverlapCallbacks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
@@ -83,7 +84,7 @@ public class MapZone extends Entity implements OverlapCallbacks {
 			try {
 				this.getServer().getCommandManager().getDispatcher().execute(CommandManager.m_maovrlpm(command, src -> source));
 			} catch (CommandSyntaxException e) {
-				throw new RuntimeException(e);
+				MapZones.LOGGER.error("WARNING: Invalid command in zone {} at {}", source.getEntity().getUuidAsString(), source.getEntity().getPos());
 			}
 		}
 	}
