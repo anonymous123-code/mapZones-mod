@@ -6,6 +6,8 @@ import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.TextBoxComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
+import net.minecraft.network.PacketByteBuf;
+import org.quiltmc.qsl.networking.api.PacketByteBufs;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 import java.util.ArrayList;
@@ -35,7 +37,10 @@ public class ZoneConfigScreen extends BaseUIModelScreen<FlowLayout> {
 	@Override
 	protected void build(FlowLayout rootComponent) {
 		rootComponent.childById(ButtonComponent.class, "deleteAndExitButton").onPress(element->{
-			// TODO: implement
+			PacketByteBuf buf = PacketByteBufs.create();
+			buf.writeUuid(this.zoneUUID);
+			ClientPlayNetworking.send(MapZonesPackets.DELETE_ZONE_PACKET, buf);
+			this.closeScreen();
 		});
 
 		rootComponent.childById(ButtonComponent.class, "cancelButton").onPress(element -> this.closeScreen());

@@ -15,15 +15,31 @@ import org.quiltmc.qsl.networking.api.PacketSender;
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
+import java.util.UUID;
+
 public class MapZonesPackets {
 	public static final Identifier OPEN_CONFIG_SCREEN = MapZones.id("open_config_screen");
 	public static final Identifier SAVE_CONFIG_SCREEN = MapZones.id("save_config_screen");
+	public static final Identifier DELETE_ZONE_PACKET = MapZones.id("delete_zone");
 	public static void registerClientReceivers() {
 		ClientPlayNetworking.registerGlobalReceiver(OPEN_CONFIG_SCREEN, MapZonesPackets::onOpenConfigScreen);
 	}
 
 	public static void registerServerReceivers() {
 		ServerPlayNetworking.registerGlobalReceiver(SAVE_CONFIG_SCREEN, MapZonesPackets::onSaveConfigScreen);
+		ServerPlayNetworking.registerGlobalReceiver(DELETE_ZONE_PACKET, MapZonesPackets::onDeleteZone);
+	}
+
+	private static void onDeleteZone(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler playNetworkHandler, PacketByteBuf buf, PacketSender sender) {
+		UUID uuid = buf.readUuid();
+		server.execute(() -> {
+			Entity shouldBeZone = player.getWorld().getEntity(uuid);
+			if (shouldBeZone instanceof MapZone zone) {
+				zone.remove(Entity.RemovalReason.KILLED);
+			} else {
+				MapZones.LOGGER.warn("Player {}, send a Delete Zone Packet with a invalid UUID", player);
+			}
+		});
 	}
 
 	private static void onSaveConfigScreen(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler playNetworkHandler, PacketByteBuf buf, PacketSender sender) {
