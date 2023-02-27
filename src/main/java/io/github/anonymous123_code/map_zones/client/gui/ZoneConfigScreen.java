@@ -6,6 +6,8 @@ import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.TextBoxComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
+import me.lucko.fabric.api.permissions.v0.Permissions;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 import org.quiltmc.qsl.networking.api.PacketByteBufs;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
@@ -25,13 +27,15 @@ public class ZoneConfigScreen extends BaseUIModelScreen<FlowLayout> {
 	private final List<String> initialOnTickCommands;
 	private final List<String> initialOnExitCommands;
 	private final UUID zoneUUID;
+	private final Entity player;
 
-	public ZoneConfigScreen(UUID zoneUUID, List<String> initialOnEnterCommands, List<String> initialOnTickCommands, List<String> initialOnExitCommands) {
+	public ZoneConfigScreen(Entity player, UUID zoneUUID, List<String> initialOnEnterCommands, List<String> initialOnTickCommands, List<String> initialOnExitCommands) {
 		super(FlowLayout.class, DataSource.file("../src/main/resources/assets/map_zones/ui/zone_config.xml"));
 		this.zoneUUID = zoneUUID;
 		this.initialOnEnterCommands = initialOnEnterCommands;
 		this.initialOnTickCommands = initialOnTickCommands;
 		this.initialOnExitCommands = initialOnExitCommands;
+		this.player = player;
 	}
 
 	@Override
@@ -41,7 +45,7 @@ public class ZoneConfigScreen extends BaseUIModelScreen<FlowLayout> {
 			buf.writeUuid(this.zoneUUID);
 			ClientPlayNetworking.send(MapZonesPackets.DELETE_ZONE_PACKET, buf);
 			this.closeScreen();
-		});
+		}).active(Permissions.check(this.player, "map_zones.zone.delete", 2));
 
 		rootComponent.childById(ButtonComponent.class, "cancelButton").onPress(element -> this.closeScreen());
 

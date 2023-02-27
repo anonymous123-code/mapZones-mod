@@ -38,7 +38,7 @@ edit zone properties:
 - Game mode? -> Very risky
 
 TODO before release:
-- [ ] Investigate permission APIs
+- [X] Investigate permission APIs => use lucko's fabric-permissions-api-v0
 - [ ] Implement permission checks for
   - [ ] moving corners
   - [ ] creating zones

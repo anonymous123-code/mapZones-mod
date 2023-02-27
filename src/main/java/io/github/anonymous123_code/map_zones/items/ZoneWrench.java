@@ -3,6 +3,7 @@ package io.github.anonymous123_code.map_zones.items;
 import io.github.anonymous123_code.map_zones.entities.MapZone;
 import io.github.anonymous123_code.map_zones.networking.MapZonesPackets;
 import io.github.anonymous123_code.map_zones.networking.ZoneCommandSyncPacket;
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,7 @@ public class ZoneWrench extends Item implements MapZonesItem {
 		HitResult hitResult = MapZonesItem.raycast(user, 0);
 		if (hitResult instanceof EntityHitResult entityHitResult
 				&& entityHitResult.getEntity() instanceof MapZone zone) {
-			if (user instanceof ServerPlayerEntity serverPlayerEntity) {
+			if (user instanceof ServerPlayerEntity serverPlayerEntity && Permissions.check(serverPlayerEntity, "map_zones.zone.edit.settings", 2)) {
 				ServerPlayNetworking.send(serverPlayerEntity, MapZonesPackets.OPEN_CONFIG_SCREEN, ZoneCommandSyncPacket.from(zone).getByteBuffer());
 			}
 			return TypedActionResult.success(user.getStackInHand(hand));

@@ -5,6 +5,7 @@ import io.github.anonymous123_code.map_zones.api.ItemStackData;
 import io.github.anonymous123_code.map_zones.entities.MapZone;
 import io.github.anonymous123_code.map_zones.entities.MapZonesEntities;
 import io.github.anonymous123_code.map_zones.mixin.InGameHudMixin;
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.api.EnvType;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -43,7 +44,9 @@ public class ZoneCorner extends Item implements MapZonesItem {
 			stack.mapZones$setFirstCorner(pos);
 			this.createEntityAndClearIfNeeded(stack, world, player);
 		} else {
-			stack.mapZones$getBound().setFirst(pos);
+			if (Permissions.check(player, "map_zones.edit.corner", 2)) {
+				stack.mapZones$getBound().setFirst(pos);
+			}
 		}
 		refreshHudName();
 		return ActionResult.SUCCESS;
@@ -55,7 +58,9 @@ public class ZoneCorner extends Item implements MapZonesItem {
 			stack.mapZones$setSecondCorner(hitResult.getBlockPos());
 			this.createEntityAndClearIfNeeded(stack, world, player);
 		} else {
-			stack.mapZones$getBound().setSecond(hitResult.getBlockPos());
+			if (Permissions.check(player, "map_zones.zone.edit.corner", 2)) {
+				stack.mapZones$getBound().setSecond(hitResult.getBlockPos());
+			}
 		}
 		refreshHudName();
 		return ActionResult.SUCCESS;
@@ -102,6 +107,7 @@ public class ZoneCorner extends Item implements MapZonesItem {
 
 	public void createEntityAndClearIfNeeded(ItemStackData itemStack, World world, PlayerEntity player) {
 		if (itemStack.mapZones$getFirstCorner() == null || itemStack.mapZones$getSecondCorner() == null) return;
+		if (!Permissions.check(player, "map_zones.zone.create", 2)) return;
 
 		if (world instanceof ServerWorld serverWorld) {
 			NbtCompound nbtCompound = new NbtCompound();

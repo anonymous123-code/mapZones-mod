@@ -3,6 +3,7 @@ package io.github.anonymous123_code.map_zones.networking;
 import io.github.anonymous123_code.map_zones.MapZones;
 import io.github.anonymous123_code.map_zones.client.gui.ZoneConfigScreen;
 import io.github.anonymous123_code.map_zones.entities.MapZone;
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.entity.Entity;
@@ -33,6 +34,8 @@ public class MapZonesPackets {
 	private static void onDeleteZone(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler playNetworkHandler, PacketByteBuf buf, PacketSender sender) {
 		UUID uuid = buf.readUuid();
 		server.execute(() -> {
+			if (!Permissions.check(player, "map_zones.zone.delete", 2)) return;
+
 			Entity shouldBeZone = player.getWorld().getEntity(uuid);
 			if (shouldBeZone instanceof MapZone zone) {
 				zone.remove(Entity.RemovalReason.KILLED);
@@ -45,6 +48,8 @@ public class MapZonesPackets {
 	private static void onSaveConfigScreen(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler playNetworkHandler, PacketByteBuf buf, PacketSender sender) {
 		ZoneCommandSyncPacket packet = new ZoneCommandSyncPacket(buf);
 		server.execute(() -> {
+			if (!Permissions.check(player, "map_zones.zone.edit.settings", 2)) return;
+
 			Entity shouldBeZone = player.getWorld().getEntity(packet.getZoneUUID());
 			if (shouldBeZone instanceof MapZone zone) {
 				zone.setListeners(packet.getOnEnterCommands(), packet.getOnTickCommands(), packet.getOnExitCommands());
@@ -56,6 +61,6 @@ public class MapZonesPackets {
 
 	private static void onOpenConfigScreen(MinecraftClient client, ClientPlayNetworkHandler clientPlayNetworkHandler, PacketByteBuf packetByteBuf, PacketSender packetSender) {
 		ZoneCommandSyncPacket packet = new ZoneCommandSyncPacket(packetByteBuf);
-		client.execute(() -> client.setScreen(new ZoneConfigScreen(packet.getZoneUUID(), packet.getOnEnterCommands(), packet.getOnTickCommands(), packet.getOnExitCommands())));
+		client.execute(() -> client.setScreen(new ZoneConfigScreen(client.player, packet.getZoneUUID(), packet.getOnEnterCommands(), packet.getOnTickCommands(), packet.getOnExitCommands())));
 	}
 }
