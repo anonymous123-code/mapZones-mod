@@ -35,7 +35,7 @@ public class MapZonesEntities {
 			ArrayList<String> tagsToRemove = new ArrayList<>();
 			for (String tag : entity.getScoreboardTags()) {
 				if (tag.startsWith(MapZone.TAG_PREFIX)) {
-					List<Entity> entityList = entity.getWorld().getOtherEntities(entity, entity.getBoundingBox().expand(1.0E-7), EntityPredicates.EXCEPT_SPECTATOR.and(entity1 -> tag.endsWith(entity1.getUuidAsString())));
+					List<Entity> entityList = entity.getWorld().getOtherEntities(entity, entity.getBoundingBox().expand(5), EntityPredicates.EXCEPT_SPECTATOR.and(entity1 -> tag.endsWith(entity1.getUuidAsString())));
 					if (!(entityList.size() > 0 && entityList.get(0).getBoundingBox().intersects(entity.getBoundingBox()))) {
 						ServerWorld localWorld = (ServerWorld) entity.getWorld();
 						UUID uuid = UUID.fromString(tag.substring(MapZone.TAG_PREFIX.length()));
