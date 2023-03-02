@@ -12,6 +12,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.quiltmc.qsl.networking.api.PacketSender;
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
@@ -22,6 +23,7 @@ public class MapZonesPackets {
 	public static final Identifier OPEN_CONFIG_SCREEN = MapZones.id("open_config_screen");
 	public static final Identifier SAVE_CONFIG_SCREEN = MapZones.id("save_config_screen");
 	public static final Identifier DELETE_ZONE_PACKET = MapZones.id("delete_zone");
+	@ClientOnly
 	public static void registerClientReceivers() {
 		ClientPlayNetworking.registerGlobalReceiver(OPEN_CONFIG_SCREEN, MapZonesPackets::onOpenConfigScreen);
 	}
@@ -59,6 +61,7 @@ public class MapZonesPackets {
 		});
 	}
 
+	@ClientOnly
 	private static void onOpenConfigScreen(MinecraftClient client, ClientPlayNetworkHandler clientPlayNetworkHandler, PacketByteBuf packetByteBuf, PacketSender packetSender) {
 		ZoneCommandSyncPacket packet = new ZoneCommandSyncPacket(packetByteBuf);
 		client.execute(() -> client.setScreen(new ZoneConfigScreen(client.player, packet.getZoneUUID(), packet.getOnEnterCommands(), packet.getOnTickCommands(), packet.getOnExitCommands())));
