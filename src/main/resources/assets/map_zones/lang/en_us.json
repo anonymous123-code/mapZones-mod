@@ -1,4 +1,17 @@
 {
   "item.map_zones.zone_corner": "Zone Corner",
-  "item.map_zones.zone_wrench": "Zone Wrench"
+  "item.map_zones.zone_corner.create_mode": " [Mode: Create New] ",
+  "item.map_zones.zone_corner.edit_mode": " [Mode: Edit Bound] ",
+  "item.map_zones.zone_corner.attach_mode": " [Mode: Attach to Bound] ",
+  "item.map_zones.zone_corner.creation_success": "Created Zone",
+
+  "item.map_zones.zone_wrench": "Zone Wrench",
+
+  "map_zones.gui.zone_config.delete_zone": "Delete this Zone and Exit",
+  "map_zones.gui.zone_config.command_list.delete": "Delete",
+  "map_zones.gui.zone_config.command_list.add": "Add",
+  "map_zones.gui.zone_config.title": "Configure Zone",
+  "map_zones.gui.zone_config.on_enter": "On Enter:",
+  "map_zones.gui.zone_config.on_tick": "On Tick:",
+  "map_zones.gui.zone_config.on_exit": "On Exit:"
 }

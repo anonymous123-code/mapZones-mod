@@ -1,5 +1,6 @@
 package io.github.anonymous123_code.map_zones.client.gui;
 
+import io.github.anonymous123_code.map_zones.MapZones;
 import io.github.anonymous123_code.map_zones.networking.MapZonesPackets;
 import io.github.anonymous123_code.map_zones.networking.ZoneCommandSyncPacket;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
@@ -30,7 +31,7 @@ public class ZoneConfigScreen extends BaseUIModelScreen<FlowLayout> {
 	private final Entity player;
 
 	public ZoneConfigScreen(Entity player, UUID zoneUUID, List<String> initialOnEnterCommands, List<String> initialOnTickCommands, List<String> initialOnExitCommands) {
-		super(FlowLayout.class, DataSource.file("../src/main/resources/assets/map_zones/ui/zone_config.xml"));
+		super(FlowLayout.class, DataSource.asset(MapZones.id("zone_config")));
 		this.zoneUUID = zoneUUID;
 		this.initialOnEnterCommands = initialOnEnterCommands;
 		this.initialOnTickCommands = initialOnTickCommands;
@@ -61,17 +62,17 @@ public class ZoneConfigScreen extends BaseUIModelScreen<FlowLayout> {
 		});
 
 		FlowLayout eventList = rootComponent.childById(FlowLayout.class, "eventList");
-		FlowLayout enterEventComponent = this.model.expandTemplate(FlowLayout.class, "eventInputList", Map.of("event_name", "On Enter:"));
+		FlowLayout enterEventComponent = this.model.expandTemplate(FlowLayout.class, "eventInputList", Map.of("event_name", "map_zones.gui.zone_config.on_enter"));
 		enterEventComponent.childById(ButtonComponent.class, "appendCommandButton").onPress(this.createOnPressListener(this.onEnterCommands));
 		this.setupCommandListWithInitialList(enterEventComponent, this.onEnterCommands, this.initialOnEnterCommands);
 		eventList.child(enterEventComponent);
 
-		FlowLayout tickEventComponent = this.model.expandTemplate(FlowLayout.class, "eventInputList", Map.of("event_name", "On Tick:"));
+		FlowLayout tickEventComponent = this.model.expandTemplate(FlowLayout.class, "eventInputList", Map.of("event_name", "map_zones.gui.zone_config.on_tick"));
 		tickEventComponent.childById(ButtonComponent.class, "appendCommandButton").onPress(this.createOnPressListener(this.onTickCommands));
 		this.setupCommandListWithInitialList(tickEventComponent, this.onTickCommands, this.initialOnTickCommands);
 		eventList.child(tickEventComponent);
 
-		FlowLayout exitEventComponent = this.model.expandTemplate(FlowLayout.class, "eventInputList", Map.of("event_name", "On Exit:"));
+		FlowLayout exitEventComponent = this.model.expandTemplate(FlowLayout.class, "eventInputList", Map.of("event_name", "map_zones.gui.zone_config.on_exit"));
 		exitEventComponent.childById(ButtonComponent.class, "appendCommandButton").onPress(this.createOnPressListener(this.onExitCommands));
 		this.setupCommandListWithInitialList(exitEventComponent, this.onExitCommands, this.initialOnExitCommands);
 		eventList.child(exitEventComponent);

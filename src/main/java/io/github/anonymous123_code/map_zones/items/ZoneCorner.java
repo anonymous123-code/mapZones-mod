@@ -96,9 +96,9 @@ public class ZoneCorner extends Item implements MapZonesItem {
 				stack.mapZones$setBound(null);
 				stack.mapZones$setFirstCorner(null);
 				stack.mapZones$setSecondCorner(null);
-			} else {
-				stack.mapZones$setAttachmentModeActive(!stack.mapZones$getAttachmentModeActive());
-			}
+			}// else {
+				//stack.mapZones$setAttachmentModeActive(!stack.mapZones$getAttachmentModeActive());
+			//}
 			refreshHudName();
 			return TypedActionResult.success(user.getStackInHand(hand));
 		}
@@ -122,7 +122,7 @@ public class ZoneCorner extends Item implements MapZonesItem {
 			serverWorld.shouldCreateNewEntityWithPassenger(entity);
 		}
 		if (world.isClient()) {
-			player.sendMessage(Text.literal("Created Zone"), true);
+			player.sendMessage(Text.translatable("item.map_zones.zone_corner.creation_success"), true);
 		}
 		itemStack.mapZones$setFirstCorner(null);
 		itemStack.mapZones$setSecondCorner(null);
@@ -132,17 +132,17 @@ public class ZoneCorner extends Item implements MapZonesItem {
 	public String getTranslationKey(ItemStack stack) {
 		ItemStackData stackData = asItemStackData(stack);
 		if (stackData.mapZones$getBound() == null) {
-			if (stackData.mapZones$getAttachmentModeActive()) {
-				return super.getTranslationKey() + ".attachmentModeActive";
-			} else {
+			//if (stackData.mapZones$getAttachmentModeActive()) {
+			//	return super.getTranslationKey() + ".attachmentModeActive";
+			//} else {
 				return super.getTranslationKey() + "";
-			}
+			//}
 		} else {
-			if (stackData.mapZones$getAttachmentModeActive()) {
-				return super.getTranslationKey() + ".bound.attachmentModeActive";
-			} else {
+			//if (stackData.mapZones$getAttachmentModeActive()) {
+			//	return super.getTranslationKey() + ".bound.attachmentModeActive";
+			//} else {
 				return super.getTranslationKey() + ".bound";
-			}
+			//}
 		}
 	}
 
@@ -152,17 +152,17 @@ public class ZoneCorner extends Item implements MapZonesItem {
 		Text leftCornerText = ((MutableText) Text.of("[L] ")).setStyle(Style.EMPTY.withColor(stackData.mapZones$getFirstCorner() == null ? Formatting.GRAY : Formatting.GREEN));
 		Text rightCornerText = ((MutableText) Text.of("[R]")).setStyle(Style.EMPTY.withColor(stackData.mapZones$getSecondCorner() == null ? Formatting.GRAY : Formatting.GREEN));
 		if (stackData.mapZones$getBound() == null) {
-			if (stackData.mapZones$getAttachmentModeActive()) {
-				return Text.translatable(super.getTranslationKey()).append(((MutableText) Text.of(" [Mode: Create New] [A] ")).setStyle(Style.EMPTY.withColor(Formatting.GRAY))).append(leftCornerText).append(rightCornerText);
-			} else {
-				return Text.translatable(super.getTranslationKey()).append(((MutableText) Text.of(" [Mode: Create New] ")).setStyle(Style.EMPTY.withColor(Formatting.GRAY))).append(leftCornerText).append(rightCornerText);
-			}
+			//if (stackData.mapZones$getAttachmentModeActive()) {
+			//	return Text.translatable(super.getTranslationKey()).append(((MutableText) Text.of(" [Mode: Create New] [A] ")).setStyle(Style.EMPTY.withColor(Formatting.GRAY))).append(leftCornerText).append(rightCornerText);
+			//} else {
+				return Text.translatable(super.getTranslationKey()).append(Text.translatable(super.getTranslationKey() + ".create_mode").setStyle(Style.EMPTY.withColor(Formatting.GRAY))).append(leftCornerText).append(rightCornerText);
+			//}
 		} else {
-			if (stackData.mapZones$getAttachmentModeActive()) {
-				return Text.translatable(super.getTranslationKey()).append(((MutableText) Text.of(" [Mode: Attach to Bound] ")).setStyle(Style.EMPTY.withColor(Formatting.GRAY))).append(leftCornerText).append(rightCornerText);
-			} else {
-				return Text.translatable(super.getTranslationKey()).append(((MutableText) Text.of(" [Mode: Edit Bound] ")).setStyle(Style.EMPTY.withColor(Formatting.GRAY))).append(leftCornerText).append(rightCornerText);
-			}
+			//if (stackData.mapZones$getAttachmentModeActive()) {
+			//	return Text.translatable(super.getTranslationKey()).append(Text.translatable(super.getTranslationKey() + ".attach_mode").setStyle(Style.EMPTY.withColor(Formatting.GRAY))).append(leftCornerText).append(rightCornerText);
+			//} else {
+				return Text.translatable(super.getTranslationKey()).append(Text.translatable(super.getTranslationKey() + ".edit_mode").setStyle(Style.EMPTY.withColor(Formatting.GRAY))).append(leftCornerText).append(rightCornerText);
+			//}
 		}
 	}
 

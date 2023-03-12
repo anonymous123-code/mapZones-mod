@@ -42,7 +42,7 @@ public class MapZonesPackets {
 			if (shouldBeZone instanceof MapZone zone) {
 				zone.remove(Entity.RemovalReason.KILLED);
 			} else {
-				MapZones.LOGGER.warn("Player {}, send a Delete Zone Packet with a invalid UUID", player);
+				MapZones.LOGGER.warn("Player {} send a Delete Zone Packet with a invalid UUID", player);
 			}
 		});
 	}
@@ -56,7 +56,7 @@ public class MapZonesPackets {
 			if (shouldBeZone instanceof MapZone zone) {
 				zone.setListeners(packet.getOnEnterCommands(), packet.getOnTickCommands(), packet.getOnExitCommands());
 			} else {
-				MapZones.LOGGER.warn("Player {}, send a Save Config Screen Packet with a invalid UUID", player);
+				MapZones.LOGGER.warn("Player {} send a Save Config Screen Packet with a invalid UUID", player);
 			}
 		});
 	}

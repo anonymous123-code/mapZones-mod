@@ -8,9 +8,9 @@ public interface ItemStackData {
 
 	void mapZones$setBound(MapZone mapZones$bound);
 
-	boolean mapZones$getAttachmentModeActive();
+	//boolean mapZones$getAttachmentModeActive();
 
-	void mapZones$setAttachmentModeActive(boolean mapZones$attachmentModeActive);
+	//void mapZones$setAttachmentModeActive(boolean mapZones$attachmentModeActive);
 
 	BlockPos mapZones$getFirstCorner();
 

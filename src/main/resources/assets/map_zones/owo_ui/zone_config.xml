@@ -6,7 +6,7 @@
                 <flow-layout direction="vertical">
                     <children>
                         <label>
-                            <text>Configure Zone</text>
+                            <text translate="true">map_zones.gui.zone_config.title</text>
                             <color>dark-gray</color>
                         </label>
 
@@ -19,7 +19,7 @@
                                     </flow-layout>
 
                                     <button id="deleteAndExitButton">
-                                        <text>Delete this Zone and Exit</text>
+                                        <text translate="true">map_zones.gui.zone_config.delete_zone</text>
                                     </button>
                                 </children>
                                 <padding>
@@ -38,7 +38,7 @@
                                 <flow-layout direction="horizontal">
                                     <children>
                                         <button id="cancelButton">
-                                            <text>Cancel</text>
+                                            <text translate="true">gui.cancel</text>
                                             <sizing>
                                                 <horizontal method="fill">20</horizontal>
                                             </sizing>
@@ -47,7 +47,7 @@
                                             </margins>
                                         </button>
                                         <button id="doneButton">
-                                            <text>Done</text>
+                                            <text translate="true">gui.done</text>
                                             <sizing>
                                                 <horizontal method="fill">20</horizontal>
                                             </sizing>
@@ -95,7 +95,7 @@
                         <text>{{command}}</text>
                     </text-box>
                     <button id="deleteCommandButton">
-                        <text>Delete</text>
+                        <text translate="true">map_zones.gui.zone_config.command_list.delete</text>
                         <sizing>
                             <horizontal method="fill">10</horizontal>
                         </sizing>
@@ -111,7 +111,7 @@
                     <flow-layout direction="horizontal">
                         <children>
                             <label>
-                                <text>{{event_name}}</text>
+                                <text translate="true">{{event_name}}</text>
                                 <color>dark-gray</color>
                                 <margins>
                                     <vertical>2</vertical>
@@ -127,7 +127,7 @@
                     <flow-layout direction="vertical">
                         <children>
                             <button id="appendCommandButton">
-                                <text>Add</text>
+                                <text translate="true">map_zones.gui.zone_config.command_list.add</text>
                                 <margins>
                                     <vertical>2</vertical>
                                 </margins>
