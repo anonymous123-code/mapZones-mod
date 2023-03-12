@@ -90,7 +90,9 @@ public class ZoneConfigScreen extends BaseUIModelScreen<FlowLayout> {
 
 	private void addChildToCommandList(FlowLayout listElement, DeletableStringRef command) {
 		FlowLayout commandInputField = this.model.expandTemplate(FlowLayout.class, "commandInput", Map.of("command", command.get()));
-		commandInputField.childById(TextBoxComponent.class, "commandTextBox").onChanged().subscribe(command::set);
+		commandInputField.childById(TextBoxComponent.class, "commandTextBox")
+				.text(command.get())
+				.onChanged().subscribe(command::set);
 		commandInputField.childById(ButtonComponent.class, "deleteCommandButton").onPress(button -> {
 			command.delete();
 			button.parent().remove();
