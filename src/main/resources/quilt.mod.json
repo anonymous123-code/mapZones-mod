@@ -15,6 +15,7 @@
 				"issues": "https://github.com/anonymous123-code/mapZones-mod/issues",
 				"sources": "https://github.com/anonymous123-code/mapZones-mod"
 			},
+			"license": "LGPL-2.1-only",
 			"icon": "assets/map_zones/icon.png"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
