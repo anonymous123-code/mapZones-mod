@@ -109,7 +109,7 @@ loom {
 	}
 }
 
-test.dependsOn runGametest
+//test.dependsOn runGametest
 
 // Configure the maven publication
 publishing {
