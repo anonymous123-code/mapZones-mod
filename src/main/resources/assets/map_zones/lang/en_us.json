@@ -4,8 +4,15 @@
   "item.map_zones.zone_corner.edit_mode": " [Mode: Edit Bound] ",
   "item.map_zones.zone_corner.attach_mode": " [Mode: Attach to Bound] ",
   "item.map_zones.zone_corner.creation_success": "Created Zone",
+  "item.map_zones.zone_corner.tooltip.1": "Creates and edits Zones",
+  "item.map_zones.zone_corner.tooltip.2": "Left-Click a block to set the first corner",
+  "item.map_zones.zone_corner.tooltip.3": "Right-Click for the second",
+  "item.map_zones.zone_corner.tooltip.4": "Sneak-Right-Click in the air to clear stored data",
+  "item.map_zones.zone_corner.tooltip.5": "Sneak-Right-Click a Zone to select and edit it, instead of creating new ones",
+  "item.map_zones.zone_corner.tooltip.6": "Turn on Hitboxes (F3+B) to view created zones",
 
   "item.map_zones.zone_wrench": "Zone Wrench",
+  "item.map_zones.zone_wrench.tooltip.1": "Right-Click a Zone to edit its properties",
 
   "map_zones.gui.zone_config.delete_zone": "Delete this Zone and Exit",
   "map_zones.gui.zone_config.command_list.delete": "Delete",

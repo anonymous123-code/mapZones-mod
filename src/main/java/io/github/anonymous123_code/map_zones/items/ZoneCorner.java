@@ -9,6 +9,7 @@ import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.api.EnvType;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,8 +30,10 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.quiltmc.loader.api.minecraft.MinecraftQuiltLoader;
 
+import java.util.List;
 import java.util.Objects;
 
 public class ZoneCorner extends Item implements MapZonesItem {
@@ -164,6 +167,17 @@ public class ZoneCorner extends Item implements MapZonesItem {
 				return Text.translatable(super.getTranslationKey()).append(Text.translatable(super.getTranslationKey() + ".edit_mode").setStyle(Style.EMPTY.withColor(Formatting.GRAY))).append(leftCornerText).append(rightCornerText);
 			//}
 		}
+	}
+
+	@Override
+	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+		super.appendTooltip(stack, world, tooltip, context);
+		tooltip.add(Text.translatable("item.map_zones.zone_corner.tooltip.1"));
+		tooltip.add(Text.translatable("item.map_zones.zone_corner.tooltip.2"));
+		tooltip.add(Text.translatable("item.map_zones.zone_corner.tooltip.3"));
+		tooltip.add(Text.translatable("item.map_zones.zone_corner.tooltip.4"));
+		tooltip.add(Text.translatable("item.map_zones.zone_corner.tooltip.5"));
+		tooltip.add(Text.translatable("item.map_zones.zone_corner.tooltip.6"));
 	}
 
 	private static void refreshHudName() {
