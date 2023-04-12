@@ -4,7 +4,6 @@
   "package": "io.github.anonymous123_code.map_zones.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "AddItemsToItemGroupMixin",
     "ItemStackMixin"
   ],
   "client": [

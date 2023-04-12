@@ -82,7 +82,7 @@ public class MapZone extends Entity implements OverlapCallbacks {
 	private void executeCommandList(List<ParseResults<ServerCommandSource>> commands, ServerCommandSource source) {
 		for (ParseResults<ServerCommandSource> command : commands) {
 			try {
-				this.getServer().getCommandManager().getDispatcher().execute(CommandManager.m_maovrlpm(command, src -> source));
+				this.getServer().getCommandManager().getDispatcher().execute(CommandManager.method_45018(command, src -> source));
 			} catch (CommandSyntaxException e) {
 				MapZones.LOGGER.error("WARNING: Invalid command in zone {} at {}", source.getEntity().getUuidAsString(), source.getEntity().getPos());
 			}
