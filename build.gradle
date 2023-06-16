@@ -80,37 +80,6 @@ jar {
 	}
 }
 
-// Gametest stuff
-sourceSets {
-	gametest {
-		compileClasspath += sourceSets.main.compileClasspath
-		runtimeClasspath += sourceSets.main.runtimeClasspath
-		compileClasspath += sourceSets.main.output
-		runtimeClasspath += sourceSets.main.output
-	}
-}
-
-loom {
-	runs {
-		gametest {
-			server()
-			name = "Headless Game Test Server"
-			property("quilt.game_test", "true")
-			runDir "build/gametest"
-			source = project.sourceSets.gametest
-		}
-
-		gametestClient {
-			client()
-			name = "Game Test Client"
-			property("quilt.game_test.command", "true")
-			source = project.sourceSets.gametest
-		}
-	}
-}
-
-//test.dependsOn runGametest
-
 // Configure the maven publication
 publishing {
 	publications {
