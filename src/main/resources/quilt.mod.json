@@ -29,7 +29,7 @@
 				"versions": ">=0.2-SNAPSHOT"
 			},
 			{
-				"id": "owo",
+				"id": "owo-lib",
 				"versions": ">=0.10.3"
 			},
 			{
