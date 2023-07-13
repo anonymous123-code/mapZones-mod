@@ -34,7 +34,7 @@ jobs:
       - name: publish
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          modrinth-id: PxIvFRZv
+          modrinth-id: GaeDYYvY
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           modrinth-featured: false
 
