@@ -19,7 +19,7 @@ import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.CommandOutput;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.ScreenTexts;
+import net.minecraft.text.CommonTexts;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 
@@ -42,7 +42,7 @@ public class MapZone extends Entity implements OverlapCallbacks {
 	@Override
 	public void tick() {
 		super.tick();
-		List<Entity> list = this.world.getOtherEntities(this, this.getBoundingBox().expand(1.0E-7), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> !(entity instanceof MapZone))); // TODO: replace with MapZones:Shouldn't trigger tag
+		List<Entity> list = this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(1.0E-7), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> !(entity instanceof MapZone))); // TODO: replace with MapZones:Shouldn't trigger tag
 		if (!list.isEmpty()) {
 			for (Entity entity2 : list) {
 				if (entity2.getBoundingBox().intersects(this.getBoundingBox())) {
@@ -117,7 +117,7 @@ public class MapZone extends Entity implements OverlapCallbacks {
 		this.updateDimensionsChange();
 
 		ServerCommandSource dummySource = new ServerCommandSource(
-				CommandOutput.DUMMY, Vec3d.ZERO, Vec2f.ZERO, null, 2, "", ScreenTexts.EMPTY, null, null
+				CommandOutput.DUMMY, Vec3d.ZERO, Vec2f.ZERO, null, 2, "", CommonTexts.EMPTY, null, null
 		);
 
 		this.onEnterCommands.clear();
@@ -141,7 +141,7 @@ public class MapZone extends Entity implements OverlapCallbacks {
 
 	public void setListeners (List<String> onEnterCommands, List<String> onTickCommands, List<String> onExitCommands) {
 		ServerCommandSource dummySource = new ServerCommandSource(
-				CommandOutput.DUMMY, Vec3d.ZERO, Vec2f.ZERO, null, 2, "", ScreenTexts.EMPTY, null, null
+				CommandOutput.DUMMY, Vec3d.ZERO, Vec2f.ZERO, null, 2, "", CommonTexts.EMPTY, null, null
 		);
 
 		this.onEnterCommands.clear();

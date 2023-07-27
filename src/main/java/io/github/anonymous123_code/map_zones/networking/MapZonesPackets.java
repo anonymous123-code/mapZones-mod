@@ -38,7 +38,7 @@ public class MapZonesPackets {
 		server.execute(() -> {
 			if (!Permissions.check(player, "map_zones.zone.delete", 2)) return;
 
-			Entity shouldBeZone = player.getWorld().getEntity(uuid);
+			Entity shouldBeZone = player.getServerWorld().getEntity(uuid);
 			if (shouldBeZone instanceof MapZone zone) {
 				zone.remove(Entity.RemovalReason.KILLED);
 			} else {
@@ -52,7 +52,7 @@ public class MapZonesPackets {
 		server.execute(() -> {
 			if (!Permissions.check(player, "map_zones.zone.edit.settings", 2)) return;
 
-			Entity shouldBeZone = player.getWorld().getEntity(packet.getZoneUUID());
+			Entity shouldBeZone = player.getServerWorld().getEntity(packet.getZoneUUID());
 			if (shouldBeZone instanceof MapZone zone) {
 				zone.setListeners(packet.getOnEnterCommands(), packet.getOnTickCommands(), packet.getOnExitCommands());
 			} else {

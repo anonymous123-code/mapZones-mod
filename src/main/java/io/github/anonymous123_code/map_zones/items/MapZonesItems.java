@@ -19,8 +19,10 @@ public class MapZonesItems {
 		Registry.register(Registries.ITEM, MapZones.id("zone_wrench"), ZONE_WRENCH);
 
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.OPERATOR_UTILITIES).register((entries -> {
-			entries.addItem(MapZonesItems.ZONE_CORNER);
-			entries.addItem(MapZonesItems.ZONE_WRENCH);
+			if (entries.getContext().hasPermissions()) {
+				entries.addItem(MapZonesItems.ZONE_CORNER);
+				entries.addItem(MapZonesItems.ZONE_WRENCH);
+			}
 		}));
 
 		AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
