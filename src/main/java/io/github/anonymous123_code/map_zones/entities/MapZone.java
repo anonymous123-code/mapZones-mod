@@ -161,6 +161,10 @@ public class MapZone extends Entity implements OverlapCallbacks {
 	}
 
 	@Override
+	public boolean entityDataRequiresOperator() {
+		return true;
+	}
+	@Override
 	protected void writeCustomDataToNbt(NbtCompound nbt) {
 		nbt.putIntArray("FirstPos", new int[]{this.getFirst().getX(), this.getFirst().getY(), this.getFirst().getZ()});
 		nbt.putIntArray("SecondPos", new int[]{this.getSecond().getX(), this.getSecond().getY(), this.getSecond().getZ()});
